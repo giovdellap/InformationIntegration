@@ -1,0 +1,17 @@
+docker compose up
+
+Delete feeder container:
+docker rm /feeder
+
+Delete influxdb container:
+docker rm /infdb
+
+Delete influxdb image:
+docker image rm bigdatamanagement-feeder
+
+#Start influxdb linux local:
+sudo service influxdb start
+
+Status influxdb linux local:
+sudo service influxdb status
+
