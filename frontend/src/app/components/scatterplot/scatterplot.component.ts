@@ -74,7 +74,6 @@ export class ScatterplotComponent implements OnInit{
     this.xAxisControl.valueChanges.subscribe(() => this.valueChanges())
     this.yAxisControl.valueChanges.subscribe(() => this.valueChanges())
     this.modelControl.valueChanges.subscribe(() => this.valueChanges())
-    this.apiService.getObservable().subscribe(() => this.valueChanges())
   }
 
   onClickColored() {

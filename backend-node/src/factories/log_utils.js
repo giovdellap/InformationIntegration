@@ -1,7 +1,7 @@
 const model = require("../model/m_model");
 const { LogItem} = require("../model/m_logitem")
 const { Relevation } = require("../model/m_relevation");
-const { ChartGeneratorParameters, ChartAnalyzerParameters, GraphPredictorParameters, MarketTrackerParameters } = require("../model/m_parameters");
+const { ChartGeneratorParameters, ChartAnalyzerParameters, GraphPredictorParameters, MarketTrackerParameters, Parameters } = require("../model/m_parameters");
 const { randomNumber, randomFloat } = require("./utils")
 
 function newItem(date, classification) {
@@ -53,16 +53,12 @@ function randomCustomer() {
     return result;
   }
   
-function getParameters(name, temperature) {
-    switch (name) {
-        case "ChartGenerator":
-            return new ChartGeneratorParameters(randomFloat(0, 2), temperature)
-        case "ChartAnalyzer":
-            return new ChartAnalyzerParameters(randomFloat(0, 2), temperature)
-        case "GraphPredictor":
-            return new GraphPredictorParameters(randomFloat(0, 2), randomFloat(0, 2))
-        case "MarketTracker":
-            return new MarketTrackerParameters(randomFloat(0, 1))
+function getParameters(name, temperature){
+    return {
+        presence_penalty: randomFloat(0, 2),
+        frequency_penalty: randomFloat(0, 2),
+        top_p: randomFloat(0, 1),
+        temperature: temperature
     }
 }
 

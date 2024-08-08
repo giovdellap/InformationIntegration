@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,7 +27,7 @@ import { ApiService } from './services/api.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
+export class AppComponent{
 
   title = 'frontend';
 
@@ -36,24 +36,13 @@ export class AppComponent implements OnInit {
   subrowGenEmitter = new BehaviorSubject<boolean>(true)
   subrowGenObservable: Observable<boolean>
 
-  options = ['influx', 'cassandra']
-  dbControl: FormControl
-  db: string
 
   constructor(
     private apiService: ApiService,
     private router: Router
   ) {
-    this.db = this.apiService.getDB()
-    this.dbControl = new FormControl(this.db)
     this.subrowObservable = this.subrowEmitter.asObservable()
     this.subrowGenObservable = this.subrowGenEmitter.asObservable()
-  }
-
-  ngOnInit(): void {
-    this.dbControl.valueChanges.subscribe((res: string) => {
-      this.apiService.setDB(res)
-    })
   }
 
   clickButtonRow(gen: boolean) {

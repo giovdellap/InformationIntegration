@@ -8,10 +8,7 @@ function newRequest(special, date) {
     let stream_messages = randomNumber(1, 9)
     let input_dimension = 0
     let loading_time = 0
-    if (special) {
-        //console.log('IM SPECIAL')
-        input_dimension = randomNumber(1000, 8001)
-    }
+    input_dimension = randomNumber(1000, 8001)
 
     let classification = getRequestClassification(date)
     // date/hour increase
@@ -38,25 +35,14 @@ function newRequest(special, date) {
         let add = Math.round((25/8000*input_dimension) * multiplier)
         loading_time = loading_time + add
     }
-    
-    if (special) {
-        return new SpecialRequest(
-            input_tokens,
-            total_tokens,
-            date,
-            Math.round(loading_time),
-            stream_messages,
-            input_dimension
-        )
-    } else {
-        return new Request(
-            input_tokens,
-            total_tokens,
-            date,
-            Math.round(loading_time),
-            stream_messages
-        )
-    }
+    return new SpecialRequest(
+        input_tokens,
+        total_tokens,
+        date,
+        Math.round(loading_time),
+        stream_messages,
+        input_dimension
+    )
 
 }
 

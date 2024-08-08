@@ -55,7 +55,6 @@ export class LoadingtimePageComponent implements OnInit{
     this.pcaFactory.createSvg('pcagraph')
     this.newGraph()
     this.optionControl.valueChanges.subscribe(() => this.controlValueChanges())
-    this.apiService.getObservable().subscribe(() => this.controlValueChanges())
   }
 
   controlValueChanges() {

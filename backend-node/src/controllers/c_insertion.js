@@ -1,12 +1,9 @@
 const { DataFactory } = require("../factories/datafactory.js")
-const { InfluxDBHandler} = require("../handlers/h_influx.js")
-const { CassandraDBHandler } = require("../handlers/h_cassandra.js")
-const { DBHandler } = require("../handlers/h_dbhandler.js")
-const { getHandler } = require("./controller_utils.js")
+const { getWrapper } = require("./controller_utils.js")
 const { generateandInsertOneDay } = require("./utils/insertionUtils.js")
 
 const initializeDB = ( async (req, res) => {
-  let dbHandler = getHandler(req.body.db)
+  let dbHandler = getWrapper(req.body.db)
   await dbHandler.initialize()
   res.json({text: "OK"})
 
@@ -14,13 +11,13 @@ const initializeDB = ( async (req, res) => {
 
 const setupBothDB = ( async (req, res) => {
 
-  let cassandraHandler = getHandler('cassandra')
-  let influxHandler = getHandler('influx')
+  let cassandraWrapper = getWrapper('cassandra')
+  let influxWrapper = getWrapper('influx')
 
   // initialization
-  await cassandraHandler.initialize()
+  await cassandraWrapper.initialize()
   console.log('CASSANDRA INITIALIZATION OK')
-  await influxHandler.initialize()
+  await influxWrapper.initialize()
   console.log('INFLUX INITIALIZATION OK')
 
   //FILL UP
@@ -33,11 +30,11 @@ const setupBothDB = ( async (req, res) => {
       req.body.month,
       i, 0, 0
     )
-    let cassandraCount = await generateandInsertOneDay(date, cassandraHandler, req.body.db)
+    let cassandraCount = await generateandInsertOneDay(date, cassandraWrapper, 'cassandra')
     console.log("CASSANDRA: DAY ", date, " INSERTED")
     cassandraTotal += cassandraCount
 
-    let influxCount = await generateandInsertOneDay(date, influxHandler, req.body.db)
+    let influxCount = await generateandInsertOneDay(date, influxWrapper, 'influx')
     console.log("INFLUX: DAY ", date, " INSERTED")
     influxTotal += influxCount
   }

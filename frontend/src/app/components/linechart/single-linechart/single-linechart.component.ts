@@ -35,7 +35,6 @@ export class SingleLinechartComponent {
       this.xAxis = x
       this.getGraph()
     })
-    this.apiService.getObservable().subscribe(() => this.getGraph())
   }
 
   getGraph() {

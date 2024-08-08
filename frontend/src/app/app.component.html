@@ -6,14 +6,6 @@
     </div>
     <div class="admin-buttons">
       <button mat-raised-button routerLink = "/setup">SETUP</button>
-      <mat-form-field class="formField">
-        <mat-label></mat-label>
-        <mat-select [formControl]="dbControl" [(value)]="db">
-          @for (option of options; track option) {
-            <mat-option [value]="option">{{option}}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
     </div>
 
 

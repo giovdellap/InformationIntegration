@@ -1,50 +1,34 @@
 const { countItems, roundFloats, roundToInt, groupBy, calculateMean } = require("./utils/queryUtils")
-const { getHandler } = require("./controller_utils")
 const PCA = require ("pca-js")
+const { CassandraWrapper } = require("../db/wrappers/cassandra/cassandrawrapper")
+const { InfluxWrapper } = require("../db/wrappers/influx/influxwrapper")
+const { Mediator } = require("../db/mediator")
 
-const basicQuery = ( async (req, res) => {
+const sessionQuery = ( async (req, res) => {
 
   const field1 = req.body.field1
   const field2 = req.body.field2
-  const model_filter = req.body.model_filter
+  
+  let mediator = new Mediator()
+  result = await mediator.sessionQuery(field1, field2)
 
-  let response = []
-  let dbHandler = getHandler(req.body.db)
-
-  let dbResponse = await dbHandler.basicQuery(field1, field2, model_filter)
-  if (field2 === 'temperature') {
-    for (item in dbResponse) {
-      if(item.temperature === 0 || isNaN(item.temperature)) {
-        dbResponse.splice(dbResponse.indexOf(item), 1)
-      }
-    }
-  }
-  if (field2 === 'presence_penalty') {
-    for (item in dbResponse) {
-      if(item.presence_penalty === 0 || isNaN(item.presence_penalty)) {
-        dbResponse.splice(dbResponse.indexOf(item), 1)
-      }
-    }
-  }
-  console.log("RESPONSE LENGTH: ", dbResponse.length)
-  let arr = roundFloats(dbResponse, [field1, field2])
+  let arr = roundFloats(result, [field1, field2])
   response = countItems(arr, field1, field2) 
   
   res.json(response)
 })
 
-const basicQueryNoCount = ( async (req, res) => {
+const sessionQueryNoCount = ( async (req, res) => {
 
   const field1 = req.body.field1
   const field2 = req.body.field2
-  const model_filter = req.body.model_filter
 
   //let response = []
   let dbHandler = getHandler(req.body.db)
 
-  let dbResponse = await dbHandler.basicQuery(field1, field2, model_filter)
-
-  console.log("RESPONSE LENGTH: ", dbResponse.length)
+  let mediator = new Mediator()
+  result = await mediator.sessionQuery(field1, field2)
+  console.log("RESPONSE LENGTH: ", result.length)
   //let arr = roundFloats(dbResponse, [field1, field2])
   //response = countItems(arr, field1, field2) 
   
@@ -182,8 +166,8 @@ const test = ( async (req, res) => {
 
   
 module.exports = {
-  basicQuery,
-  basicQueryNoCount,
+  sessionQuery,
+  sessionQueryNoCount,
   wliBoxplotQuery,
   basicRequestQuery,
   basicRequestNoCountQuery,

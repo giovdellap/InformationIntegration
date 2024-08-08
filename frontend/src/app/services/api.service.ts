@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { BasicQueryNoCountResponseItem } from '../model/queryresponses/basicQueryNoCountResponse';
 import { BasicRequestQueryItem } from '../model/queryresponses/basicRequestQueryItem';
@@ -13,25 +13,10 @@ import { WLIBoxPlotqueryItem } from '../model/queryresponses/wliBoxPlotQueryItem
 export class ApiService {
 
   private url = "http://localhost:5001"
-  public dbObservable = new EventEmitter<string>()
-  private db: string = 'influx'
 
   constructor(private http: HttpClient) { }
 
   // SERVICE SETTINGS
-
-  setDB(db:string) {
-    this.db = db
-    this.dbObservable.emit(db)
-  }
-
-  getDB() {
-    return this.db
-  }
-
-  getObservable() {
-    return this.dbObservable.asObservable()
-  }
 
   getLogObservable(request: Observable<any>) {
     return request.pipe(tap((response: any) => {
@@ -43,40 +28,33 @@ export class ApiService {
 
   getBasicQuery(field1: string, field2: string, model: string): Observable<SatisfactionQueryItem[]> {
     let body = {
-      db: this.db,
       field1: field1,
       field2: field2,
-      model_filter: model
     }
     return this.getLogObservable(
-      this.http.post<SatisfactionQueryItem[]>(this.url + "/query/basicQuery", body)
+      this.http.post<SatisfactionQueryItem[]>(this.url + "/query/sessionQuery", body)
     )
   }
 
   getBasicQueryNoCOunt(field1: string, field2: string, model: string): Observable<BasicQueryNoCountResponseItem[]> {
     let body = {
-      db: this.db,
       field1: field1,
       field2: field2,
-      model_filter: model
     }
     return this.getLogObservable(
-      this.http.post<BasicQueryNoCountResponseItem[]>(this.url + "/query/basicQueryNoCount", body)
+      this.http.post<BasicQueryNoCountResponseItem[]>(this.url + "/query/sessionQueryNoCount", body)
     )
   }
 
   getwliBoxplotQuery(field: string, model: string): Observable<WLIBoxPlotqueryItem[]> {
     let body = {
-      db: this.db,
       field: field,
-      model_filter: model
     }
     return this.getLogObservable(this.http.post<WLIBoxPlotqueryItem[]>(this.url + "/query/wliboxplotquery", body))
   }
 
   getBasicRequestQuery(field: string): Observable<BasicRequestQueryItem[]> {
     let body = {
-      db: this.db,
       field: field
     }
     return this.getLogObservable(this.http.post<BasicRequestQueryItem[]>(this.url + '/query/basicRequestQuery', body))
@@ -84,7 +62,6 @@ export class ApiService {
 
   getBasicRequestQueryNoCount(field: string): Observable<BasicRequestQueryItem[]> {
     let body = {
-      db: this.db,
       field: field
     }
     return this.getLogObservable(this.http.post<BasicRequestQueryItem[]>(this.url + '/query/basicRequestQueryNoCount', body))
@@ -92,7 +69,6 @@ export class ApiService {
 
   getPCARequestQuery(field: string): Observable<BasicRequestQueryItem[]> {
     let body = {
-      db: this.db,
       field: field
     }
     return this.getLogObservable(this.http.post<BasicRequestQueryItem[]>(this.url + '/query/pcaquery', body))
@@ -100,7 +76,6 @@ export class ApiService {
 
   getLineChartQuery(field1: string, field2: string, model: string): Observable<BasicQueryNoCountResponseItem[]> {
     let body = {
-      db: this.db,
       field1: field1,
       field2: field2,
       model_filter: model

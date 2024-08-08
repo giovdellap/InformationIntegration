@@ -38,8 +38,6 @@ export class MultipleLinechartComponent {
       this.xAxis = x
       this.loadGraphs()
     })
-    this.linechartService
-    this.apiService.getObservable().subscribe(() => this.loadGraphs())
   }
 
   loadGraphs() {

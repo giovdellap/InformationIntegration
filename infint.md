@@ -6,7 +6,7 @@ ServiceRequest(timestamp, tokens, messages, input_t, input_d, time)
 
 ## Cassandra
 SessionRelevation(logID, ts, name, version, Satisfaction, Generations)
-SessionSpecification(logID, UserID, tokens, wli, presence penalty, frequency_penalty, top_p, temperature)
+SessionSpecification(logID, user, tokens, wli, p_penalty, f, top_p, temp)
 ExternalRequest(timestamp, tokens, messages, time, input_tokens)
 RequestAttachment(ts, d)
 

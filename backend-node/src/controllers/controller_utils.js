@@ -1,15 +1,14 @@
-const { InfluxDBHandler} = require("../handlers/h_influx.js")
-const { CassandraDBHandler } = require("../handlers/h_cassandra.js")
-const { DBHandler } = require("../handlers/h_dbhandler.js")
+const { CassandraWrapper } = require("../db/wrappers/cassandra/cassandrawrapper.js")
+const { InfluxWrapper } = require("../db/wrappers/influx/influxwrapper.js")
 
-function getHandler(db) {
+function getWrapper(db) {
     if (db === "cassandra") {
-      return new CassandraDBHandler()
+      return new CassandraWrapper()
     } else {
-      return new InfluxDBHandler()
+      return new InfluxWrapper()
     }
 }
 
 module.exports = {
-    getHandler
+    getWrapper
 }

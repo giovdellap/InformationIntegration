@@ -44,7 +44,6 @@ export class WliboxplotsPageComponent implements OnInit {
     console.log('oninit 2')
     this.optionControl.valueChanges.subscribe(() => this.controlValueChanges())
     this.modelControl.valueChanges.subscribe(() => this.controlValueChanges())
-    this.apiService.getObservable().subscribe(() => this.controlValueChanges())
   }
 
   controlValueChanges() {
