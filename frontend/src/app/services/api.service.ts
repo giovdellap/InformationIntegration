@@ -57,14 +57,14 @@ export class ApiService {
     let body = {
       field: field
     }
-    return this.getLogObservable(this.http.post<BasicRequestQueryItem[]>(this.url + '/query/basicRequestQuery', body))
+    return this.getLogObservable(this.http.post<BasicRequestQueryItem[]>(this.url + '/query/requestQuery', body))
   }
 
   getBasicRequestQueryNoCount(field: string): Observable<BasicRequestQueryItem[]> {
     let body = {
       field: field
     }
-    return this.getLogObservable(this.http.post<BasicRequestQueryItem[]>(this.url + '/query/basicRequestQueryNoCount', body))
+    return this.getLogObservable(this.http.post<BasicRequestQueryItem[]>(this.url + '/query/requestQueryNoCount', body))
   }
 
   getPCARequestQuery(field: string): Observable<BasicRequestQueryItem[]> {

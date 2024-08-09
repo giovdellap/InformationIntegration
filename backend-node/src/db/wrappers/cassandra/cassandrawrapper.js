@@ -68,8 +68,8 @@ class CassandraWrapper extends Wrapper{
       let attachmentFactory = new AttachmentQueryFactory(this.DB_KEYSPACE, this.ATTACHMENT_TABLE)
 
       for (let i = 0; i < items.length; i++) {
-        await insertItemOnly(this.client, requestFactory, items[i])
-        await insertItemOnly(this.client, attachmentFactory, items[i])
+        await insertItemOnly(this.client, requestFactory, items[i], i)
+        await insertItemOnly(this.client, attachmentFactory, items[i], i)
       }
     }
   }
@@ -117,12 +117,14 @@ class CassandraWrapper extends Wrapper{
     return res
   }
 
-  async basicRequestQuery(field) {
+  async requestQuery(field) {
     const factory = new RequestQueryFactory(this.DB_KEYSPACE, this.REQUEST_TABLE)
-    
-    
-    let query = factory.basicQuery(field)
-    console.log('QUERY: ', query)
+    console.log('FIELD WRAPPER: ', field)
+    let query 
+    if(field === "d") {
+      query = factory.requestDimensionQuery()
+    } else query = factory.requestQuery(field)
+    console.log('CASSANDRA QUERY: ', query)
     let result = []
     
     let stream = this.client.stream(query)
@@ -130,11 +132,11 @@ class CassandraWrapper extends Wrapper{
       // 'readable' is emitted as soon a row is received and parsed
       let row;
       while (row = this.read()) {
-        if (field === "time") {
+        if (field === "timestamp") {
           //console.log(row)
           result.push({
-            loading_time: row.loading_time,
-            time: row["system.dateof(ts)"]
+            loading_time: row.time,
+            timestamp: row["system.dateof(timestamp)"]
           })
         } else result.push(row)
       }
@@ -150,6 +152,13 @@ class CassandraWrapper extends Wrapper{
     //console.log()
     return result
   }
+
+  async getRequestDimensionByRID(rid) {
+    let factory = new AttachmentQueryFactory (this.DB_KEYSPACE, this.ATTACHMENT_TABLE)
+    let res = await executeQuery(this.client, factory.requestDimensionQuery(rid))
+    return res
+  }
+
 }
 
 

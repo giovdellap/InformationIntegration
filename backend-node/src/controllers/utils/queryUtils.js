@@ -59,6 +59,7 @@ function roundFloats(data, values) {
     let res = []
     for (let i = 0; i < data.length; i++) {
         let obj = {}
+        //console.log('DATA: ', data[i])
         for (let j = 0; j < values.length; j++) {
             obj[values[j]] = data[i][values[j]].toFixed(2)
         }

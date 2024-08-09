@@ -6,35 +6,28 @@ function newRequest(special, date) {
     let input_tokens = randomNumber(1000, 10001)
     let total_tokens = input_tokens + randomNumber(10000, 70001)
     let stream_messages = randomNumber(1, 9)
-    let input_dimension = 0
+    let input_dimension = randomNumber(1000, 8001)
     let loading_time = 0
-    input_dimension = randomNumber(1000, 8001)
 
-    let classification = getRequestClassification(date)
     // date/hour increase
     if (getRequestClassification(date) === "LOW") {
         loading_time = randomNumber(10, 31) 
     } else {
         loading_time = randomNumber(25, 60)
     }
-    if(classification !== 'LOW') {
-    }
 
     // total tokens increase
     loading_time = loading_time + ((total_tokens - input_tokens)/ 2000)
-    if(classification !== 'LOW') {
-    }
+
     // input dimension increase
-    if(input_dimension > 0) {
-        let multiplier = 0
-        if (input_dimension > randomNumber(2000, 4000)) {
-            multiplier = randomFloat(1, 1.4)
-        } else {
-            multiplier = randomFloat(0.5, 0.8)
-        }
-        let add = Math.round((25/8000*input_dimension) * multiplier)
-        loading_time = loading_time + add
+    let multiplier = 0
+    if (input_dimension > randomNumber(2000, 4000)) {
+        multiplier = randomFloat(1, 1.4)
+    } else {
+        multiplier = randomFloat(0.5, 0.8)
     }
+    let add = Math.round((25/8000*input_dimension) * multiplier)
+    loading_time = loading_time + add
     return new SpecialRequest(
         input_tokens,
         total_tokens,

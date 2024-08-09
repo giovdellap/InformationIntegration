@@ -67,7 +67,7 @@ class LogRelevationFactory extends QueryFactory{
             logID,
             item.timestamp,
             item.model.name, item.model.version,
-            item.relevations.generations, item.relevations.satisfaction,
+            item.relevations.satisfaction, item.relevations.generations,
         ]
 
         return values
@@ -170,9 +170,9 @@ class RequestQueryFactory extends QueryFactory {
     createTableQuery() {
         //console.log('cassandra handler - log item table')
         let start = "CREATE TABLE IF NOT EXISTS " + this.keyspace + "." + this.table_name
-        let ts_columns = " (timestamp timeuuid, "
+        let ts_columns = " (rid int, timestamp timeuuid, "
         let request_columns = "tokens int, messages int, time int, input_tokens int,  "
-        let primary_key = "PRIMARY KEY(timestamp))"
+        let primary_key = "PRIMARY KEY(rid))"
         const query = start + ts_columns + request_columns + primary_key
         return query
     }
@@ -197,6 +197,7 @@ class RequestQueryFactory extends QueryFactory {
 
     insertItemValues(item, logID) {
         let values = [
+            logID,
             cassandra.types.TimeUuid.fromDate(item.timestamp),
             item.total_tokens,
             item.stream_messages,
@@ -206,28 +207,17 @@ class RequestQueryFactory extends QueryFactory {
         return values
     }
 
-    basicQuery(field) {
+    requestQuery(field) {
         let basicQuery = ""
-        console.log(field)
-        if (field !== "time") {
-            basicQuery = "SELECT loading_time, " +  field + " FROM " + this.keyspace + "." + this.table_name
-        } else basicQuery = "SELECT loading_time, DateOf(ts) FROM " + this.keyspace + "." + this.table_name
-        let whereSection = ""
+        //console.log(field)
+        if (field !== "timestamp") {
+            basicQuery = "SELECT time, " +  field + " FROM " + this.keyspace + "." + this.table_name
+        } else basicQuery = "SELECT time, DateOf(timestamp) FROM " + this.keyspace + "." + this.table_name
+        return basicQuery
+    }
 
-        let whereClauses = []
-        if (field === "input_dimension") {
-            whereClauses.push(field + " > 0")
-        }
-        if (whereClauses.length > 0) {
-            whereSection = " WHERE " + whereClauses[0]
-        }
-        if (whereClauses.length === 2) {
-            whereSection = whereSection + " AND " + whereClauses[1]
-        }
-        if (whereSection !== "") {
-            whereSection = whereSection + " ALLOW FILTERING"
-        }
-        return basicQuery + whereSection
+    requestDimensionQuery(rid) {
+        return "SELECT d FROM " + this.keyspace + "." + this.table_name + " WHERE rid = " + rid + " ALLOW FILTERING"
     }
 }
 
@@ -235,8 +225,8 @@ class AttachmentQueryFactory extends QueryFactory {
     createTableQuery() {
         //console.log('cassandra handler - log item table')
         let start = "CREATE TABLE IF NOT EXISTS " + this.keyspace + "." + this.table_name
-        let ts_columns = " (timestamp timeuuid, d int, "
-        let primary_key = "PRIMARY KEY(timestamp))"
+        let ts_columns = " (rid int, d int, "
+        let primary_key = "PRIMARY KEY(rid))"
         const query = start + ts_columns + primary_key
         return query
     }
@@ -244,7 +234,7 @@ class AttachmentQueryFactory extends QueryFactory {
     insertItemQuery() {
         //console.log("cassandra handler - insert request item: ", item)
         let utils = new AttachmentTableUtils()
-        let columns_names = ["timestamp", "d"]
+        let columns_names = ["rid", "d"]
         //console.log("cassandra handler - insert request columns_names: ", columns_names)
 
         let start = "INSERT INTO " + this.keyspace + "." + this.table_name + " ("
@@ -255,38 +245,20 @@ class AttachmentQueryFactory extends QueryFactory {
         //console.log('query: ', query)
         //console.log('time: ', ts)
         return query
+
     }
 
     insertItemValues(item, logID) {
         let values = [
-            cassandra.types.TimeUuid.fromDate(item.timestamp),
+            logID,
             item.input_dimension
         ]
+        //console.log('CASSANDRA ATTACHMENT VALUES', values[0])
         return values
     }
 
-    basicQuery(field) {
-        let basicQuery = ""
-        console.log(field)
-        if (field !== "time") {
-            basicQuery = "SELECT loading_time, " +  field + " FROM " + this.keyspace + "." + this.table_name
-        } else basicQuery = "SELECT loading_time, DateOf(ts) FROM " + this.keyspace + "." + this.table_name
-        let whereSection = ""
-
-        let whereClauses = []
-        if (field === "input_dimension") {
-            whereClauses.push(field + " > 0")
-        }
-        if (whereClauses.length > 0) {
-            whereSection = " WHERE " + whereClauses[0]
-        }
-        if (whereClauses.length === 2) {
-            whereSection = whereSection + " AND " + whereClauses[1]
-        }
-        if (whereSection !== "") {
-            whereSection = whereSection + " ALLOW FILTERING"
-        }
-        return basicQuery + whereSection
+    requestDimensionQuery(rid) {
+        return "SELECT d FROM " + this.keyspace + "." + this.table_name + " WHERE rid = " + rid + " ALLOW FILTERING"
     }
 }
 

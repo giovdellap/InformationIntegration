@@ -22,7 +22,7 @@ class InfluxQueryFactory {
 
         let filters = [
             this.getFilterQuery('_measurement', 'request'),
-            this.getFilterQuery('_field', "loading_time"),
+            this.getFilterQuery('_field', "l_time"),
         ]
         return this.getQuery(filters)
     }

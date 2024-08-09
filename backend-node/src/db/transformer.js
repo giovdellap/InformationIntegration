@@ -3,11 +3,22 @@ const cassandraFields = [
     ["f_penalty", "frequence_penalty"],
     ["p_penalty", "presence_penalty"],
     ["temp", "temperature"],
+    ["time", "loading_time"],
+    ["d", "input_dimension"],
+    ["tokens", "total_tokens"],
+    ["messages", "stream_messages"],
+    ["timestamp", "time"]
 ]
 
 const influxFields = [
     ["Gen", "generations"],
-    ["Sat", "satisfaction"]
+    ["Sat", "satisfaction"],
+    ["input_t", "input_tokens"],
+    ["input_d", "input_dimension"],
+    ["messages", "stream_messages"],
+    ["l_time", "loading_time"],
+    ["tokens", "total_tokens"],
+
 ]
 
 function getCassandra(string) {

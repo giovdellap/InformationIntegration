@@ -13,6 +13,7 @@ export class WeekdayService {
   constructor() { }
 
   insertArray(data: BasicRequestQueryItem[]) {
+    console.log("WEEKDAY SERVICE DATAARRAY: ", this.dataArray )
     this.dataArray = emptydataArray
     for (let i = 0; i < data.length; i++) {
       let originalDate = new Date(data[i].time)
@@ -23,6 +24,7 @@ export class WeekdayService {
         originalDate.getSeconds()
       )
       let obj = new WeekdayLogItem(data[i].loading_time, newDate, weekdayNames[originalDate.getDay()])
+      console.log(originalDate, obj)
       this.dataArray[originalDate.getDay()].push(obj)
     }
   }

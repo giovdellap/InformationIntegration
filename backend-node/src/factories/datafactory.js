@@ -29,7 +29,7 @@ class DataFactory {
         let rate = getRate(rateClassification)
         if (db === "cassandra") {
             rate = Math.floor(rate/3)
-            console.log(rate)
+            //console.log(rate)
         }
         //console.log("logs rate: ", rate)
 
@@ -46,7 +46,6 @@ class DataFactory {
                 this.requestSet.push(request)
             }
         }
-
     }
 
     get logSet() {

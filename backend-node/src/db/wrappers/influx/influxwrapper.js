@@ -24,12 +24,12 @@ class InfluxWrapper extends Wrapper{
 
   async insertMultipleItems(type, items) {
     
-    console.log(items[0])
+    //console.log(items[0])
     let points = []
     for (let i = 0; i < items.length; i++) {
       let point = {}
       if (type === "LOGS") {
-        console.log(items[i].tokens)
+        //console.log(items[i].tokens)
         point = LogItemToPoint(items[i])
       } else {
         point = RequestToPoint(items[i])
@@ -43,7 +43,7 @@ class InfluxWrapper extends Wrapper{
   }
 
   async insertLogItem(item) {
-    console.log(item.tokens)
+    //console.log(item.tokens)
     let point = LogItemToPoint(item)
     let writeApi = this.client.getWriteApi(this.org, this.bucket)
     writeApi.writePoint(point)
@@ -59,21 +59,18 @@ class InfluxWrapper extends Wrapper{
   }
 
   async sessionQuery(field1, field2) {
-    console.log('AO', field1, field2)
     const queryFactory = new InfluxQueryFactory(this.bucket)
-    console.log(field1, field2)
     const fluxQuery = queryFactory.getSessionQuery(field1)
     console.log('QUERY: ', fluxQuery)
     let result = await this.queryRows(fluxQuery, field1, field2)
     return result
   }
 
-  async basicRequestQuery(field) {
-
+  async requestQuery(field) {
     const queryFactory = new InfluxQueryFactory(this.bucket)
     const fluxQuery = queryFactory.getRequestQuery()
     console.log('QUERY: ', fluxQuery)
-    let result = await this.queryRows(fluxQuery, "loading_time", field)
+    let result = await this.queryRows(fluxQuery, "l_time", field)
     return result
   }
 

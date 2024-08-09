@@ -23,8 +23,6 @@ const sessionQueryNoCount = ( async (req, res) => {
   const field1 = req.body.field1
   const field2 = req.body.field2
 
-  //let response = []
-  let dbHandler = getHandler(req.body.db)
 
   let mediator = new Mediator()
   result = await mediator.sessionQuery(field1, field2)
@@ -32,7 +30,7 @@ const sessionQueryNoCount = ( async (req, res) => {
   //let arr = roundFloats(dbResponse, [field1, field2])
   //response = countItems(arr, field1, field2) 
   
-  res.json(dbResponse)
+  res.json(result)
 })
 
 const linechartQuery = ( async (req, res) => {
@@ -73,49 +71,49 @@ const wliBoxplotQuery = ( async (req, res) => {
   res.json(response)
 })
 
-const basicRequestQuery = ( async (req, res) => {
+const requestQuery = ( async (req, res) => {
 
   const field = req.body.field
 
   let response = []
-  let dbHandler = getHandler(req.body.db)
 
-  let dbResponse = await dbHandler.basicRequestQuery(field)
-  console.log("RESPONSE LENGTH: ", dbResponse.length)
+  let mediator = new Mediator()
+  result = await mediator.requestQuery(field)
+
+  console.log("RESPONSE LENGTH: ", result.length)
   //let arr = roundFloats(dbResponse, [field1, field2])
-  response = countItems(dbResponse, field, "loading_time") 
+  response = countItems(result, field, "loading_time") 
   
   res.json(response)
 })
 
-const basicRequestNoCountQuery = ( async (req, res) => {
+const requestQueryNoCount = ( async (req, res) => {
 
   const field = req.body.field
 
-  let dbHandler = getHandler(req.body.db)
+  let mediator = new Mediator()
+  result = await mediator.requestQuery(field)
 
-  let dbResponse = await dbHandler.basicRequestQuery(field)
-  console.log("RESPONSE LENGTH: ", dbResponse.length)
+  console.log("RESPONSE LENGTH: ", result.length)
   //let arr = roundFloats(dbResponse, [field1, field2])
   //response = countItems(dbResponse, field, "loading_time") 
   
-  res.json(dbResponse)
+  res.json(result)
 })
 
 const pcaRequestQuery = ( async (req, res) => {
 
   const field = req.body.field
 
-  let dbHandler = getHandler(req.body.db)
-
-  let dbResponse = await dbHandler.basicRequestQuery(field)
-  console.log("RESPONSE LENGTH: ", dbResponse.length)
+  let mediator = new Mediator()
+  result = await mediator.requestQuery(field)
+  console.log("RESPONSE LENGTH: ", result.length)
 
   // transorm items to numbers arrays
   let onlyNumbers = []
-  for (let i = 0; i < dbResponse.length; i++) {
+  for (let i = 0; i < result.length; i++) {
     //let item = [dbResponse[i]['loading_time'], dbResponse [i][field]]
-    let item = [dbResponse [i][field], dbResponse[i]['loading_time']]
+    let item = [result[i][field], result[i]['loading_time']]
 
     onlyNumbers.push(item)
   }
@@ -169,8 +167,8 @@ module.exports = {
   sessionQuery,
   sessionQueryNoCount,
   wliBoxplotQuery,
-  basicRequestQuery,
-  basicRequestNoCountQuery,
+  requestQuery,
+  requestQueryNoCount,
   pcaRequestQuery,
   test,
   linechartQuery

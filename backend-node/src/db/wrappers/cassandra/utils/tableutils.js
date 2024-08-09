@@ -52,14 +52,14 @@ class LogsSpecTableUtils extends TableUtils {
 class SpecialRequestTableUtils extends TableUtils {
 
     tableColumns = [
-    "timestamp", "tokens", "messages", "time", "input_tokens"
+    "rid", "timestamp", "tokens", "messages", "time", "input_tokens"
     ]
 }
 
 class AttachmentTableUtils extends TableUtils {
 
     tableColumns = [
-    "timestamp", "d"
+    "rid", "d"
     ]
 }
 
