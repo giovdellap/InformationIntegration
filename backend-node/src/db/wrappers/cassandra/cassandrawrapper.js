@@ -119,7 +119,6 @@ class CassandraWrapper extends Wrapper{
 
   async requestQuery(field) {
     const factory = new RequestQueryFactory(this.DB_KEYSPACE, this.REQUEST_TABLE)
-    console.log('FIELD WRAPPER: ', field)
     let query 
     if(field === "d") {
       query = factory.requestDimensionQuery()

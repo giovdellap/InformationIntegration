@@ -82,14 +82,12 @@ const pcaRequestQuery = ( async (req, res) => {
 
     onlyNumbers.push(item)
   }
-  console.log('ONLYNUMBERS: ',onlyNumbers)
   let vectors = PCA.getEigenVectors(onlyNumbers)
   //var first = PCA.computePercentageExplained(vectors,vectors[0])
   //var topTwo = PCA.computePercentageExplained(vectors,vectors[0],vectors[1])
   
   var adData = PCA.computeAdjustedData(onlyNumbers,vectors[0])
   let results = []
-  console.log('FORMATTEDDATA: ', adData.formattedAdjustedData)
   for (let i = 0; i < adData.formattedAdjustedData[0].length; i++) {
     let result = {}
     result['loading_time'] = 0

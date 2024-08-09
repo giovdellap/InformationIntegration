@@ -11,7 +11,6 @@ class Mediator {
 
         // CASSANDRA
         let cassandraResponse = await cassandraWrapper.sessionQueryRelevation(getCassandra(field1))
-        console.log('CASSSANDRARESPONSE 0: ',cassandraResponse[0])
         for(let i = 0; i < cassandraResponse.length; i++) {
             if (field2 === 'temperature') {
                 if(cassandraResponse[i].temp === 0 || isNaN(cassandraResponse[i].temp)) {
