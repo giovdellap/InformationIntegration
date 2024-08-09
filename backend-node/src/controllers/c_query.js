@@ -1,7 +1,6 @@
 const { countItems, roundFloats, roundToInt, groupBy, calculateMean } = require("./utils/queryUtils")
 const PCA = require ("pca-js")
-const { CassandraWrapper } = require("../db/wrappers/cassandra/cassandrawrapper")
-const { InfluxWrapper } = require("../db/wrappers/influx/influxwrapper")
+
 const { Mediator } = require("../db/mediator")
 
 const sessionQuery = ( async (req, res) => {
@@ -11,6 +10,7 @@ const sessionQuery = ( async (req, res) => {
   
   let mediator = new Mediator()
   result = await mediator.sessionQuery(field1, field2)
+
 
   let arr = roundFloats(result, [field1, field2])
   response = countItems(arr, field1, field2) 
@@ -33,43 +33,8 @@ const sessionQueryNoCount = ( async (req, res) => {
   res.json(result)
 })
 
-const linechartQuery = ( async (req, res) => {
-
-  const field1 = req.body.field1
-  const field2 = req.body.field2
-  const model_filter = req.body.model_filter
-
-  //let response = []
-  let dbHandler = getHandler(req.body.db)
-
-  let dbResponse = await dbHandler.basicQuery(field1, field2, model_filter)
-  console.log("RESPONSE LENGTH: ", dbResponse)
-  let response = calculateMean(dbResponse, field1, field2)
-  console.log('LINECHART RESPONSE', response)
-
-  //let arr = roundFloats(dbResponse, [field1, field2])
-  //response = countItems(arr, field1, field2) 
-  
-  res.json(response)
-})
 
 
-const wliBoxplotQuery = ( async (req, res) => {
-
-  const field = req.body.field
-  const model_filter = req.body.model_filter
-
-  let response = []
-  let dbHandler = getHandler(req.body.db)
-
-  let dbResponse = await dbHandler.basicQuery('wli', field, model_filter)
-  //console.log(dbResponse)
-  console.log("RESPONSE LENGTH: ", dbResponse.length)
-  //let arr = roundToInt(dbResponse, [field, 'wli'])
-  response = groupBy(dbResponse, 'wli', field) 
-  
-  res.json(response)
-})
 
 const requestQuery = ( async (req, res) => {
 
@@ -138,39 +103,13 @@ const pcaRequestQuery = ( async (req, res) => {
   res.json(response)
 })
 
-const test = ( async (req, res) => {
-
-  const test = ( async (req, res) => {
-
-    let dbHandler = getHandler(req.body.db)
-  
-    let dbResponse = await dbHandler.test()
-    console.log("dbResponse: ", dbResponse)
-    //console.log("RESPONSE LENGTH: ", dbResponse.length)
-    //let arr = roundFloats(dbResponse, [field1, field2])
-    res.json(dbResponse)
-  
-  })
-
-  let dbHandler = getHandler(req.body.db)
-
-  let dbResponse = await dbHandler.test()
-  console.log("dbResponse: ", dbResponse)
-  //console.log("RESPONSE LENGTH: ", dbResponse.length)
-  //let arr = roundFloats(dbResponse, [field1, field2])
-  res.json(dbResponse)
-
-})
 
   
 module.exports = {
   sessionQuery,
   sessionQueryNoCount,
-  wliBoxplotQuery,
   requestQuery,
   requestQueryNoCount,
   pcaRequestQuery,
-  test,
-  linechartQuery
 }
   

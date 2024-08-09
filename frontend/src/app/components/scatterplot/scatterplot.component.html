@@ -15,18 +15,6 @@
       }
     </mat-select>
   </mat-form-field>
-  <mat-form-field class="formField">
-    <mat-label>Select model</mat-label>
-    <mat-select [formControl]="modelControl">
-      @for (model of models; track model) {
-        <mat-option
-        [value]="model"
-        [disabled]="(((presenceObservable | async) && model.presence_penalty) || ((temperatureObservable | async) && model.temperature))">
-          {{model.value}}
-        </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
   <mat-card appearance="outlined">
     <mat-card-content>
       {{insightObservable | async}}
