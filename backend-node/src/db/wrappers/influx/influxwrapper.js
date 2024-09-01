@@ -61,7 +61,7 @@ class InfluxWrapper extends Wrapper{
   async sessionQuery(field1, field2) {
     const queryFactory = new InfluxQueryFactory(this.bucket)
     const fluxQuery = queryFactory.getSessionQuery(field1)
-    console.log('QUERY: ', fluxQuery)
+    console.log('INFLUX QUERY: ', fluxQuery)
     let result = await this.queryRows(fluxQuery, field1, field2)
     return result
   }
@@ -69,7 +69,7 @@ class InfluxWrapper extends Wrapper{
   async requestQuery(field) {
     const queryFactory = new InfluxQueryFactory(this.bucket)
     const fluxQuery = queryFactory.getRequestQuery()
-    console.log('QUERY: ', fluxQuery)
+    console.log('INFLUX QUERY: ', fluxQuery)
     let result = await this.queryRows(fluxQuery, "l_time", field)
     return result
   }

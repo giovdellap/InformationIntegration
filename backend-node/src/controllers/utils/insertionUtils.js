@@ -8,7 +8,7 @@ async function generateandInsertOneDay(date, wrapper, db) {
       console.log(date)
     }
   }
-  console.log("LOGSET LENGTH: ", dataFactory.logSet.length )
+  //console.log("LOGSET LENGTH: ", dataFactory.logSet.length )
 
   // DB INSERTION 
   //console.log("DB INSERTION - INITIALIZATION")

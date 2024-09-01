@@ -26,7 +26,7 @@ const sessionQueryNoCount = ( async (req, res) => {
 
   let mediator = new Mediator()
   result = await mediator.sessionQuery(field1, field2)
-  console.log("RESPONSE LENGTH: ", result.length)
+  //console.log("RESPONSE LENGTH: ", result.length)
   //let arr = roundFloats(dbResponse, [field1, field2])
   //response = countItems(arr, field1, field2) 
   
@@ -59,7 +59,7 @@ const requestQueryNoCount = ( async (req, res) => {
   let mediator = new Mediator()
   result = await mediator.requestQuery(field)
 
-  console.log("RESPONSE LENGTH: ", result.length)
+  //console.log("RESPONSE LENGTH: ", result.length)
   //let arr = roundFloats(dbResponse, [field1, field2])
   //response = countItems(dbResponse, field, "loading_time") 
   
@@ -72,7 +72,7 @@ const pcaRequestQuery = ( async (req, res) => {
 
   let mediator = new Mediator()
   result = await mediator.requestQuery(field)
-  console.log("RESPONSE LENGTH: ", result.length)
+  //console.log("RESPONSE LENGTH: ", result.length)
 
   // transorm items to numbers arrays
   let onlyNumbers = []

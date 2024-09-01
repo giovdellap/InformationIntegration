@@ -87,7 +87,7 @@ class CassandraWrapper extends Wrapper{
   async sessionQueryRelevation(field1) {
     const factory = new LogRelevationFactory(this.DB_KEYSPACE, this.LOGS_REL_TABLE)
     let query = factory.sessionQuery(field1)
-    //console.log('QUERY: ', query)
+    console.log('CASSANDRA QUERY 1: ', query)
     let result = []
     
     let stream = this.client.stream(query)
@@ -113,7 +113,9 @@ class CassandraWrapper extends Wrapper{
 
   async getSessionSpecificationbyLogID(lid, field) {
     let factory = new LogSpecificationFactory(this.DB_KEYSPACE, this.LOGS_SPEC_TABLE)
-    let res = await executeQuery(this.client, factory.sessionQuery(lid, field))
+    let query = factory.sessionQuery(lid, field)
+    console.log("CASSANDRA QUERY 2: ", query)
+    let res = await executeQuery(this.client, query)
     return res
   }
 
@@ -154,7 +156,9 @@ class CassandraWrapper extends Wrapper{
 
   async getRequestDimensionByRID(rid) {
     let factory = new AttachmentQueryFactory (this.DB_KEYSPACE, this.ATTACHMENT_TABLE)
-    let res = await executeQuery(this.client, factory.requestDimensionQuery(rid))
+    let query = factory.requestDimensionQuery(rid)
+    console.log("CASSANDRA QUERY: ", query)
+    let res = await executeQuery(this.client, query)
     return res
   }
 

@@ -97,7 +97,7 @@ const insertLogs = ( async (req, res) => {
   await dbHandler.insertMultipleItems("LOGS", dataFactory.logSet)
   await dbHandler.insertMultipleItems("REQUESTS", dataFactory.requestSet)
    
-  console.log("LOGSET LENGTH: ", dataFactory.logSet.length)
+  //console.log("LOGSET LENGTH: ", dataFactory.logSet.length)
   res.json({text: dataFactory.logSet})
 })
   

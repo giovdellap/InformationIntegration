@@ -57,7 +57,7 @@ class Mediator {
         } else {
             cassandraResponse = await cassandraWrapper.requestQuery("rid")
         }
-        console.log('CASSANDRARESPONSE LENGTH: ', cassandraResponse.length)
+        //console.log('CASSANDRARESPONSE LENGTH: ', cassandraResponse.length)
         for (let request of cassandraResponse) {
             if(field !== "input_dimension") {
                 let obj = {}
@@ -78,7 +78,7 @@ class Mediator {
 
         //INFLUX
         let influxResponse = await influxWrapper.requestQuery(getInflux(field))
-        console.log('INFLUXRESPONSE LENGTH: ', influxResponse.length)
+        //console.log('INFLUXRESPONSE LENGTH: ', influxResponse.length)
         for(let i = 0; i < influxResponse.length; i++) {
             let res = {}
             res["loading_time"]=influxResponse[i][getInflux("loading_time")]
