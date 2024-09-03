@@ -7,6 +7,13 @@ Student: Giovanni Della Pelle
 1) Be sure to have docker installed and running
 2) locate inside this folder and command "docker compose up"
 
+Frontend: localhost://4200
+Cassandra Web tool: localhost://8083
+Influx Web tool: 8086
+Influx credentials:
+    - username: giovdellap
+    - password: password
+
 ## Scenario: 
 Our company provides AI tools for finance brokers. Its business scheme is based on a subscription model. Users of the company services can use the company website to analyze market trends using 4 different tools.
 
